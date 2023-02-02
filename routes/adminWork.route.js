@@ -1,10 +1,14 @@
 const express = require("express")
 let { UserListModel } = require("../model/userList.model")
 let { BlockListModel } = require("../model/blockstudent.model")
+let { LectureModel } = require("../model/lecture.model")
+
+
 let jwt = require("jsonwebtoken")
 let bcrypt = require("bcrypt")
 const adminWork = express.Router()
 
+//-------------------------students-------------------------------//
 // --------create student -----//
 
 adminWork.post("/createStudent", async (req, res) => {
@@ -76,4 +80,40 @@ adminWork.patch("/editStudent/:id", async (req, res) => {
         res.send({ "msg": error })
     }
 })
+
+
+//--------------------------lectures--------------------------------------//
+//------------create lecture------------//
+
+adminWork.post("/createLecture", async (req, res) => {
+    let { topic_name, lecture_date, lecture_time, teacher_name,lecture_id,lecture_type } = req.body
+
+    //----check if student with this student id is already exist or not----//
+    let isLectureIdPresent = await LectureModel.findOne({ lecture_id: lecture_id })
+    if (isLectureIdPresent) {
+        res.send({ "msg": ` lecture with lecture id ${lecture_id} already exist` })
+    } else {
+        try {
+            let newLecture = new LectureModel({ topic_name, lecture_date, lecture_time, teacher_name,lecture_id,lecture_type})
+            await newLecture.save()
+            res.send({ "msg": "new lecture added" })
+        } catch (error) {
+            res.send({ "msg": error })
+        }
+    }
+})
+
+// --------get Lectures list -----//
+adminWork.get("/getLectures", async(req, res) => {
+
+    try {
+        let lectures = await LectureModel.find()
+
+        res.send({ "msg": lectures })
+    } catch (error) {
+        res.send({ "msg": error })
+    }
+})
+
+
 module.exports = { adminWork }
