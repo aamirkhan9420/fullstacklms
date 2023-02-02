@@ -5,6 +5,7 @@ require("dotenv").config()
 app.use(express.json())
 let cors=require("cors")
 const { adminRouter } = require("./routes/admin.route")
+const { adminWork } = require("./routes/adminWork.route")
 app.use(cors({
     origin:"*"
 }))
@@ -16,6 +17,9 @@ app.get("/",(req,res)=>{
 })
 // ------admin----//
 app.use("/admin",adminRouter)
+app.use("/adminwork",adminWork)
+
+
 app.listen(PORT,async(req,res)=>{
     
     try {
