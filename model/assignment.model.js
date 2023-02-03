@@ -7,7 +7,7 @@ const assignmentschema=mongoose.Schema({
     teacher_name:String,
     assignment_id:String,
     assignment_type:String,
-
+    userId:String
 
 })
 const AssignmentsModel=mongoose.model("assignment",assignmentschema)

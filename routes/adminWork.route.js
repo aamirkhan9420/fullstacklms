@@ -12,7 +12,7 @@ const adminWork = express.Router()
 // --------create student -----//
 
 adminWork.post("/createStudent", async (req, res) => {
-    let { name, email, student_id, image } = req.body
+    let { name, email, student_id, image, userId } = req.body
 
     //----check if student with this student id is already exist or not----//
     let isUserIdPresent = await UserListModel.findOne({ student_id: student_id })
@@ -20,7 +20,7 @@ adminWork.post("/createStudent", async (req, res) => {
         res.send({ "msg": ` student with student id ${student_id} already exist` })
     } else {
         try {
-            let newUser = new UserListModel({ name, email, student_id, image })
+            let newUser = new UserListModel({ name, email, student_id, image, userId })
             await newUser.save()
             res.send({ "msg": "new student added" })
         } catch (error) {
@@ -43,14 +43,21 @@ adminWork.get("/getStudentsList", async (req, res) => {
 
 // --------block student -----//
 adminWork.delete("/blockStudent/:id", async (req, res) => {
-    let id = req.params.id
 
-    console.log(id)
+    let id = req.params.id
+    let userId = req.body.userId
+    let student = await UserListModel.findOne({ _id: id })
+
     try {
-        let student = await UserListModel.findByIdAndDelete({ _id: id })
-        let newBlockStudent = new BlockListModel({ name: student.name, email: student.email, student_id: student.student_id, image: student.image })
-        await newBlockStudent.save()
-        res.send({ "msg": `${student.student_id} id's student blocked successfully` })
+        if (userId == student.userId) {
+
+            let student = await UserListModel.findByIdAndDelete({ _id: id })
+            let newBlockStudent = new BlockListModel({ name: student.name, email: student.email, student_id: student.student_id, image: student.image, userId: student.userId })
+            await newBlockStudent.save()
+            res.send({ "msg": `${student.student_id} id's student blocked successfully` })
+        } else {
+            res.send({ "msg": "not authorized" })
+        }
     } catch (error) {
         res.send({ "msg": error })
     }
@@ -72,10 +79,17 @@ adminWork.get("/getBlockedStudents", async (req, res) => {
 adminWork.patch("/editStudent/:id", async (req, res) => {
     let data = req.body
     let id = req.params.id
-    try {
-        let student = await UserListModel.findByIdAndUpdate({ _id: id }, data)
+    let userId = req.body.userId
+    let student = await UserListModel.findOne({ _id: id })
 
-        res.send({ "msg": `${student.student_id} id's student information updated successfully` })
+    try {
+        if (userId == student.userId) {
+            let student = await UserListModel.findByIdAndUpdate({ _id: id }, data)
+
+            res.send({ "msg": `${student.student_id} id's student information updated successfully` })
+        } else {
+            res.send({ "msg": "not authorized" })
+        }
     } catch (error) {
         res.send({ "msg": error })
     }
@@ -86,7 +100,7 @@ adminWork.patch("/editStudent/:id", async (req, res) => {
 //------------create lecture------------//
 
 adminWork.post("/createLecture", async (req, res) => {
-    let { topic_name, lecture_date, lecture_time, teacher_name,lecture_id,lecture_type } = req.body
+    let { topic_name, lecture_date, lecture_time, teacher_name, lecture_id, lecture_type, userId } = req.body
 
     //----check if lecture with this lecture id is already exist or not----//
     let isLectureIdPresent = await LectureModel.findOne({ lecture_id: lecture_id })
@@ -94,7 +108,7 @@ adminWork.post("/createLecture", async (req, res) => {
         res.send({ "msg": ` lecture with lecture id ${lecture_id} already exist` })
     } else {
         try {
-            let newLecture = new LectureModel({ topic_name, lecture_date, lecture_time, teacher_name,lecture_id,lecture_type})
+            let newLecture = new LectureModel({ topic_name, lecture_date, lecture_time, teacher_name, lecture_id, lecture_type, userId })
             await newLecture.save()
             res.send({ "msg": "new lecture added" })
         } catch (error) {
@@ -104,7 +118,7 @@ adminWork.post("/createLecture", async (req, res) => {
 })
 
 // --------get Lectures list -----//
-adminWork.get("/getLectures", async(req, res) => {
+adminWork.get("/getLectures", async (req, res) => {
 
     try {
         let lectures = await LectureModel.find()
@@ -118,12 +132,18 @@ adminWork.get("/getLectures", async(req, res) => {
 // --------delete lecture-----//
 adminWork.delete("/removelecture/:id", async (req, res) => {
     let id = req.params.id
+    let userId = req.body.userId
+    let lecture = await LectureModel.findOne({ _id: id })
 
-    console.log(id)
     try {
-        let lecture = await LectureModel.findByIdAndDelete({ _id: id })
-   
-        res.send({ "msg": `${lecture.lecture_id} id's lecture removed successfully` })
+        if (userId == lecture.userId) {
+            let lecture = await LectureModel.findByIdAndDelete({ _id: id })
+
+            res.send({ "msg": `${lecture.lecture_id} id's lecture removed successfully` })
+        } else {
+            res.send({ "msg": "not authorized" })
+        }
+
     } catch (error) {
         res.send({ "msg": error })
     }
@@ -133,10 +153,18 @@ adminWork.delete("/removelecture/:id", async (req, res) => {
 adminWork.patch("/editlecture/:id", async (req, res) => {
     let data = req.body
     let id = req.params.id
-    try {
-        let lecture = await LectureModel.findByIdAndUpdate({ _id: id }, data)
+    let userId = req.body.userId
+    let lecture = await LectureModel.findOne({ _id: id })
 
-        res.send({ "msg": `${lecture.lecture_id} id's lecture information updated successfully` })
+    try {
+        if (userId == lecture.userId) {
+
+            let lecture = await LectureModel.findByIdAndUpdate({ _id: id }, data)
+
+            res.send({ "msg": `${lecture.lecture_id} id's lecture information updated successfully` })
+        } else {
+            res.send({ "msg": "not authorized" })
+        }
     } catch (error) {
         res.send({ "msg": error })
     }
@@ -146,7 +174,7 @@ adminWork.patch("/editlecture/:id", async (req, res) => {
 //------------create assignment------------//
 
 adminWork.post("/createassignment", async (req, res) => {
-    let { topic_name, assignment_date, assignment_time, teacher_name,assignment_id,assignment_type } = req.body
+    let { topic_name, assignment_date, assignment_time, teacher_name, assignment_id, assignment_type, userId } = req.body
 
     //----check if assignment with this assignment id is already exist or not----//
     let isassignmentIdPresent = await AssignmentsModel.findOne({ assignment_id: assignment_id })
@@ -154,7 +182,7 @@ adminWork.post("/createassignment", async (req, res) => {
         res.send({ "msg": ` assignment with assignment id ${assignment_id} already exist` })
     } else {
         try {
-            let newassignment = new AssignmentsModel({ topic_name, assignment_date, assignment_time, teacher_name,assignment_id,assignment_type})
+            let newassignment = new AssignmentsModel({ topic_name, assignment_date, assignment_time, teacher_name, assignment_id, assignment_type, userId })
             await newassignment.save()
             res.send({ "msg": "new assignment added" })
         } catch (error) {
@@ -164,7 +192,7 @@ adminWork.post("/createassignment", async (req, res) => {
 })
 
 // --------get assignments list -----//
-adminWork.get("/getassignment", async(req, res) => {
+adminWork.get("/getassignment", async (req, res) => {
 
     try {
         let assignment = await AssignmentsModel.find()
@@ -179,12 +207,19 @@ adminWork.get("/getassignment", async(req, res) => {
 // --------delete assignment-----//
 adminWork.delete("/removeassignment/:id", async (req, res) => {
     let id = req.params.id
+    let userId = req.body.userId
+    let assignment = await AssignmentsModel.findOne({ _id: id })
 
-    console.log(id)
     try {
-        let assignment = await AssignmentsModel.findByIdAndDelete({ _id: id })
-   
-        res.send({ "msg": `${assignment.assignment_id} id's assignment removed successfully` })
+        if (userId == assignment.userId) {
+
+            let assignment = await AssignmentsModel.findByIdAndDelete({ _id: id })
+
+            res.send({ "msg": `${assignment.assignment_id} id's assignment removed successfully` })
+        } else {
+            res.send({ "msg": "not authorized" })
+
+        }
     } catch (error) {
         res.send({ "msg": error })
     }
@@ -195,10 +230,17 @@ adminWork.delete("/removeassignment/:id", async (req, res) => {
 adminWork.patch("/editassignment/:id", async (req, res) => {
     let data = req.body
     let id = req.params.id
+    let userId = req.body.userId
+    let assignment = await AssignmentsModel.findOne({ _id: id })
     try {
-        let assignment = await AssignmentsModel.findByIdAndUpdate({ _id: id }, data)
+        if (userId == assignment.userId) {
 
-        res.send({ "msg": `${assignment.assignment_id} id's assignment information updated successfully` })
+            let assignment = await AssignmentsModel.findByIdAndUpdate({ _id: id }, data)
+
+            res.send({ "msg": `${assignment.assignment_id} id's assignment information updated successfully` })
+        } else {
+            res.send({ "msg": "not authorized" })
+        }
     } catch (error) {
         res.send({ "msg": error })
     }

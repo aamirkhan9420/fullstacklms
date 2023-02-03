@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 const adminschema=mongoose.Schema({
+    name:String,
     email:String,
     password:String
 })

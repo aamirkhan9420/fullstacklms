@@ -6,6 +6,7 @@ app.use(express.json())
 let cors=require("cors")
 const { adminRouter } = require("./routes/admin.route")
 const { adminWork } = require("./routes/adminWork.route")
+const { authentication } = require("./middleware/authentication")
 app.use(cors({
     origin:"*"
 }))
@@ -17,6 +18,7 @@ app.get("/",(req,res)=>{
 })
 // ------admin----//
 app.use("/admin",adminRouter)
+app.use(authentication)
 app.use("/adminwork",adminWork)
 
 

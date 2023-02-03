@@ -8,11 +8,11 @@ adminRouter.get("/", (req, res) => {
    res.send("welcome to admin pannel")
 })
 adminRouter.post("/signup", async (req, res) => {
-   let { email, password } = req.body
+   let {name, email, password } = req.body
    try {
       bcrypt.hash(password, 5, async (err, hashpasword) => {
          if (hashpasword) {
-            let newadmin = new AdminModel({ email: email, password: hashpasword })
+            let newadmin = new AdminModel({name: name, email: email, password: hashpasword })
             await newadmin.save()
             res.send({ "msg": "new admin added" })
          } else {
@@ -34,19 +34,20 @@ adminRouter.post("/login", async (req, res) => {
    try {
       if (user.length > 0) {
          let hashpassword = user[0].password
-
+         let name=user[0].name
+         let email=user[0].email
          bcrypt.compare(password, hashpassword, (err, result) => {
-            console.log("ehhel")
+          
             if (result) {
                jwt.sign({ userId: user[0]._id }, process.env.KEY, (er, token) => {
                   if (token) {
-                     res.send({ "msg": "login successful", "token": token })
+                     res.send({ "msg": "login successful", "token": token,"name":name,"email":email })
                   } else {
-                     res.send({ "msg": "login failed", "err": er })
+                     res.send({ "msg": "login failed! please signup first", "err": er })
                   }
                })
             } else {
-               res.send({ "msg": "login failed", "err": err })
+               res.send({ "msg": "login failed! please signup first", "err": err })
             }
          })
       }
