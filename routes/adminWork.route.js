@@ -62,6 +62,28 @@ adminWork.delete("/blockStudent/:id", async (req, res) => {
         res.send({ "msg": error })
     }
 })
+// -------- remove student from block list -----//
+adminWork.delete("/removeBlockStudent/:id", async (req, res) => {
+
+    let id = req.params.id
+    let userId = req.body.userId
+    let blockStudent = await BlockListModel.findByIdAndDelete({ _id: id })
+
+    try {
+        if (userId == blockStudent.userId) {
+
+            let newList = new UserListModel({ name: blockStudent.name, email: blockStudent.email, student_id: blockStudent.student_id, image: blockStudent.image, userId: blockStudent.userId })
+            await newList.save()
+            res.send({ "msg": `${blockStudent.student_id} id's student removed from blocked list successfully` })
+
+        } else {
+            res.send({ "msg": "not authorized" })
+        }
+    } catch (error) {
+        console.log(error)
+        res.send({ "msg": error })
+    }
+})
 
 // --------get blocked students list -----//
 adminWork.get("/getBlockedStudents", async (req, res) => {
