@@ -1,6 +1,5 @@
 const express = require("express")
 let { AdminModel } = require("../model/admin.model")
-let {UserListModel}=require("../model/userList.model")
 let jwt = require("jsonwebtoken")
 let bcrypt = require("bcrypt")
 const adminRouter = express.Router()

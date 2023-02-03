@@ -4,8 +4,7 @@ let { BlockListModel } = require("../model/blockstudent.model")
 let { LectureModel } = require("../model/lecture.model")
 let { AssignmentsModel } = require("../model/assignment.model")
 
-let jwt = require("jsonwebtoken")
-let bcrypt = require("bcrypt")
+
 const adminWork = express.Router()
 
 //-------------------------students-------------------------------//
