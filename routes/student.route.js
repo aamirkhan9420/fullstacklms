@@ -16,13 +16,14 @@ studentRouter.post("/signup", async (req, res) => {
         if (isblocked) {
             res.send({ "msg": "your blocked!" })
         } else {
+            
             bcrypt.hash(password, 5, async (err, hashpasword) => {
                 if (hashpasword) {
                     let newstudent = new StudentModel({ name: name, email: email, password: hashpasword })
                     await newstudent.save()
-                    res.send({ "msg": "new student added" })
+                    res.send({ "msg": "signup successful" })
                 } else {
-                    res.send({ "msg": "failed to add new student" })
+                    res.send({ "msg": "signup failed" })
                 }
             })
         }
