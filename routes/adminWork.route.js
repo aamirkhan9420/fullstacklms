@@ -66,7 +66,7 @@ adminWork.delete("/removeBlockStudent/:id", async (req, res) => {
 
     let id = req.params.id
     let userId = req.body.userId
-    let blockStudent = await BlockListModel.findByIdAndDelete({ _id: id })
+    let blockStudent = await BlockListModel.findByIdAndDelete({$and:[{ _id: id },userId ]})
 
     try {
         if (userId == blockStudent.userId) {
