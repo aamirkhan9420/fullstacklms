@@ -1,13 +1,14 @@
 const mongoose=require('mongoose')
 const assignmentschema=mongoose.Schema({
 
-    topic_name:String,
-    date:String,
-    time:String,
+     topic_name:String,
+    assignment_date:String,
+    assignment_time:String,
     teacher_name:String,
-    topic_id:String,
-    type:String,
+    assignment_id:String,
+    assignment_type:String,
     userId:String
+
 
 })
 const AssignmentsModel=mongoose.model("assignment",assignmentschema)
