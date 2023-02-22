@@ -1,12 +1,12 @@
 const mongoose=require('mongoose')
 const lectureschema=mongoose.Schema({
-
-    topic_name:String,
-    lecture_date:String,
-    lecture_time:String,
+    
+  topic_name:String,
+    date:String,
+    time:String,
     teacher_name:String,
-    lecture_id:String,
-    lecture_type:String,
+    topic_id:String,
+    type:String,
     userId:String
 
 })
