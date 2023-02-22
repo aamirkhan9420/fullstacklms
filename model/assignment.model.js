@@ -2,11 +2,11 @@ const mongoose=require('mongoose')
 const assignmentschema=mongoose.Schema({
 
     topic_name:String,
-    assignment_date:String,
-    assignment_time:String,
+    date:String,
+    time:String,
     teacher_name:String,
-    assignment_id:String,
-    assignment_type:String,
+    topic_id:String,
+    type:String,
     userId:String
 
 })
