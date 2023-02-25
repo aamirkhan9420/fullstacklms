@@ -5,6 +5,7 @@ const applicationschema=mongoose.Schema({
     state:String,
     course:String,
     coursetime:String,
+    userId:String,
 
 })
 const ApplicationModel=mongoose.model("application",applicationschema)
