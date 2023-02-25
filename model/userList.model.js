@@ -1,10 +1,13 @@
 const mongoose=require('mongoose')
 const userListschema=mongoose.Schema({
-    name:String,
+     name:String,
     student_id:String,
     image:String,
     email:String,
-    userId:String
+    state:String,
+    course:String,
+    coursetime:String,
+    userId:String,
 })
 const UserListModel=mongoose.model("adminwork",userListschema)
 module.exports={UserListModel}
