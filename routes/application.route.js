@@ -5,12 +5,12 @@ let { UserListModel } = require("../model/userList.model")
 let { ApplicationModel } = require("../model/application.model")
 
 
-const applicaiontRoute = express.Router()
+const applicationtRoute = express.Router()
 
 //-------------------------Application-------------------------------//
 // --------create Application -----//
 
-applicaiontRoute.post("/createapplication", async (req, res) => {
+applicationtRoute.post("/createapplication", async (req, res) => {
     let { name, email,state,course,coursetime, userId} = req.body
 
     //----check if student with this student id is already exist or not----//
@@ -29,7 +29,7 @@ applicaiontRoute.post("/createapplication", async (req, res) => {
 })
 
 // --------get Application list -----//
-applicaiontRoute.get("/getapplicationlist", async (req, res) => {
+applicationtRoute.get("/getapplicationlist", async (req, res) => {
 
     try {
         let applicants = await ApplicationModel.find()
@@ -41,7 +41,7 @@ applicaiontRoute.get("/getapplicationlist", async (req, res) => {
 })
 
 // --------Delete student -----//
-applicaiontRoute.delete("/removeapplicant/:id", async (req, res) => {
+applicationtRoute.delete("/removeapplicant/:id", async (req, res) => {
 
     let id = req.params.id
     let userId = req.body.userId
@@ -60,4 +60,4 @@ applicaiontRoute.delete("/removeapplicant/:id", async (req, res) => {
         res.send({ "msg": error })
     }
 })
-module.exports={applicaiontRoute}
+module.exports={applicationtRoute}
