@@ -48,6 +48,7 @@ studentRouter.post("/login", async (req, res) => {
                 let hashpassword = user[0].password
                 let name = user[0].name
                 let email = user[0].email
+                let state=user[0].state
                 bcrypt.compare(password, hashpassword, (err, result) => {
     
                     if (result) {
