@@ -29,7 +29,7 @@ applicaiontRoute.post("/createapplication", async (req, res) => {
 })
 
 // --------get Application list -----//
-applicaiontRoute.get("/getapplicatonlist", async (req, res) => {
+applicaiontRoute.get("/getapplicationlist", async (req, res) => {
 
     try {
         let applicants = await ApplicationModel.find()
