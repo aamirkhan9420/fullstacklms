@@ -5,7 +5,7 @@ const applicationschema=mongoose.Schema({
     state:String,
     course:String,
     coursetime:String,
-    index:string,
+    index:String,
     userId:String,
 
 })
