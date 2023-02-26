@@ -8,6 +8,8 @@ const { adminRouter } = require("./routes/admin.route")
 const { adminWork } = require("./routes/adminWork.route")
 const { authentication } = require("./middleware/authentication")
 const { studentRouter } = require("./routes/student.route")
+const { applicationtRoute } = require("./routes/application.route")
+
 app.use(cors({
     origin:"*"
 }))
@@ -22,6 +24,7 @@ app.use("/student",studentRouter)
 app.use("/admin",adminRouter)
 app.use(authentication)
 app.use("/adminwork",adminWork)
+app.use("/application",applicationtRoute)
 
 
 app.listen(PORT,async(req,res)=>{
