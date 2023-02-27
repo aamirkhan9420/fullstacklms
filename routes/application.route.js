@@ -44,18 +44,13 @@ applicationtRoute.get("/getapplicationlist", async (req, res) => {
 applicationtRoute.delete("/removeapplicant/:id", async (req, res) => {
 
     let id = req.params.id
-    let userId = req.body.userId
-    let applicant = await ApplicationModel.findOne({ _id: id })
+ 
 
     try {
-        if (userId == applicant.userId) {
-
-             await ApplicationModel.findByIdAndDelete({ _id: id })
+        await ApplicationModel.findByIdAndDelete({ _id: id })
          
             res.send({ "msg": `rejected` })
-        } else {
-            res.send({ "msg": "not authorized" })
-        }
+      
     } catch (error) {
         res.send({ "msg": error })
     }
