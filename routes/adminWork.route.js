@@ -95,7 +95,7 @@ adminWork.delete("/DeleteStudent/:id", async (req, res) => {
     try {
           let student = await UserListModel.findByIdAndDelete({ _id: id })
          await newList.save()
-         res.send({ "msg": `${student.student_id} id's student deleted successfully` })
+         res.send({ "msg": `Student deleted successfully` })
 
     } catch (error) {
         console.log(error)
