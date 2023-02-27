@@ -104,7 +104,7 @@ adminWork.patch("/editStudent/:id", async (req, res) => {
             let student = await UserListModel.findByIdAndUpdate({ _id: id }, data)
 
             res.send({ "msg": `${student.student_id} id's student information updated successfully` })
-        } 
+        
     } catch (error) {
         res.send({ "msg": error })
     }
