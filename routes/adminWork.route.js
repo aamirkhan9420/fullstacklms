@@ -60,15 +60,11 @@ adminWork.delete("/blockStudent/:id", async (req, res) => {
 })
 // -------- remove student from block list -----//
 adminWork.delete("/removeBlockStudent/:id", async (req, res) => {
-
     let id = req.params.id
-  
-
-
-    try {  
-          let blockStudent = await BlockListModel.findOne({_id:id})
- 
-            await BlockListModel.findByIdAndDelete({_id:id})
+      try {  
+          
+             let blockStudent = await BlockListModel.findOne({_id:id})
+             await BlockListModel.findByIdAndDelete({_id:id})
             let newList = new UserListModel({ name: blockStudent.name, email: blockStudent.email, student_id: blockStudent.student_id, image: blockStudent.image, userId: blockStudent.userId,state:blockStudent.state ,course:blockStudent.course,coursetime:blockStudent.coursetime  })
             await newList.save()
             res.send({ "msg": `${blockStudent.student_id} id's student removed from blocked list successfully` })
@@ -92,6 +88,20 @@ adminWork.get("/getBlockedStudents", async (req, res) => {
     }
 })
 
+// --------------Delete Student-------------------//
+adminWork.delete("/DeleteStudent/:id", async (req, res) => {
+
+    let id = req.params.id
+    try {
+          let student = await UserListModel.findByIdAndDelete({ _id: id })
+         await newList.save()
+         res.send({ "msg": `${student.student_id} id's student deleted successfully` })
+
+    } catch (error) {
+        console.log(error)
+        res.send({ "msg": error })
+    }
+})
 // --------Edit student -----//
 adminWork.patch("/editStudent/:id", async (req, res) => {
     let data = req.body
