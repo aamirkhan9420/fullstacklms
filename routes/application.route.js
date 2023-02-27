@@ -19,9 +19,15 @@ applicationtRoute.post("/createapplication", async (req, res) => {
         res.send({ "msg": ` student already persuing course` })
     } else {
         try {
-            let newApplicant = new ApplicationModel({name, email,state,course,coursetime, userId ,index})
-            await newApplicant.save()
-            res.send({ "msg": "Application submited successfully " })
+            let isPresent=await ApplicationModel.findOne({userId: userId})
+              if(isPresent){
+        res.send({ "msg": " You can apply for one course at a time " })
+
+              }else{
+                 let newApplicant = new ApplicationModel({name, email,state,course,coursetime, userId ,index})
+                 await newApplicant.save()
+                 res.send({ "msg": "Application submited successfully " })
+              }
         } catch (error) {
             res.send({ "msg": error })
         }
