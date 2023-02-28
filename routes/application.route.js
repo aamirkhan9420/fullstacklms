@@ -14,12 +14,12 @@ applicationtRoute.post("/createapplication", async (req, res) => {
     let { name, email,state,course,coursetime,index, userId} = req.body
 
     //----check if student with this student id is already exist or not----//
-    let isUserIdPresent = await UserListModel.findOne({ userId: userId })
+    let isUserIdPresent = await UserListModel.findOne({ email: email })
     if (isUserIdPresent) {
         res.send({ "msg": ` student already persuing course` })
     } else {
         try {
-            let isPresent=await ApplicationModel.findOne({userId: userId})
+            let isPresent=await ApplicationModel.findOne({email: email})
               if(isPresent){
         res.send({ "msg": " You can apply for one course at a time " })
 
