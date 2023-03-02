@@ -122,7 +122,7 @@ adminWork.patch("/editStudent/:id", async (req, res) => {
 //------------create lecture------------//
 
 adminWork.post("/createLecture", async (req, res) => {
-    let { topic_name, lecture_date, lecture_time, teacher_name, lecture_id, lecture_type, userId } = req.body
+    let { topic_name, lecture_date, lecture_time, teacher_name, lecture_id, lecture_type, course,userId } = req.body
 
     //----check if lecture with this lecture id is already exist or not----//
     let isLectureIdPresent = await LectureModel.findOne({ lecture_id: lecture_id })
@@ -130,7 +130,7 @@ adminWork.post("/createLecture", async (req, res) => {
         res.send({ "msg": ` lecture with lecture id ${lecture_id} already exist` })
     } else {
         try {
-            let newLecture = new LectureModel({ topic_name, lecture_date, lecture_time, teacher_name, lecture_id, lecture_type, userId })
+            let newLecture = new LectureModel({ topic_name, lecture_date, lecture_time, teacher_name, lecture_id, lecture_type, course,userId })
             await newLecture.save()
             res.send({ "msg": "new lecture added" })
         } catch (error) {
