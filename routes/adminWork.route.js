@@ -196,7 +196,7 @@ adminWork.patch("/editlecture/:id", async (req, res) => {
 //------------create assignment------------//
 
 adminWork.post("/createassignment", async (req, res) => {
-    let { topic_name, assignment_date, assignment_time, teacher_name, assignment_id, assignment_type, userId } = req.body
+    let { topic_name, assignment_date, assignment_time, teacher_name, assignment_id, assignment_type, course,userId } = req.body
 
     //----check if assignment with this assignment id is already exist or not----//
     let isassignmentIdPresent = await AssignmentsModel.findOne({ assignment_id: assignment_id })
@@ -204,7 +204,7 @@ adminWork.post("/createassignment", async (req, res) => {
         res.send({ "msg": ` assignment with assignment id ${assignment_id} already exist` })
     } else {
         try {
-            let newassignment = new AssignmentsModel({ topic_name, assignment_date, assignment_time, teacher_name, assignment_id, assignment_type, userId })
+            let newassignment = new AssignmentsModel({ topic_name, assignment_date, assignment_time, teacher_name, assignment_id, assignment_type, course,userId })
             await newassignment.save()
             res.send({ "msg": "new assignment added" })
         } catch (error) {
