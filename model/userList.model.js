@@ -8,7 +8,9 @@ const userListschema=mongoose.Schema({
     course:String,
     coursetime:String,
     userId:String,
+     student_userId:String,
     index:Number,
+     
 })
 const UserListModel=mongoose.model("adminwork",userListschema)
 module.exports={UserListModel}
