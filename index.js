@@ -9,6 +9,8 @@ const { adminWork } = require("./routes/adminWork.route")
 const { authentication } = require("./middleware/authentication")
 const { studentRouter } = require("./routes/student.route")
 const { applicationtRoute } = require("./routes/application.route")
+const { studentWork } = require("./routes/studentWork.route")
+
 
 app.use(cors({
     origin:"*"
@@ -25,6 +27,8 @@ app.use("/admin",adminRouter)
 app.use(authentication)
 app.use("/adminwork",adminWork)
 app.use("/application",applicationtRoute)
+app.use("/studentwork",studentWork)
+
 
 
 app.listen(PORT,async(req,res)=>{
