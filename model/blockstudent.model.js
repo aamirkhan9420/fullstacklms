@@ -8,6 +8,7 @@ const blockListschema=mongoose.Schema({
     course:String,
     coursetime:String,
     userId:String,
+    index:Number,
 })
 const BlockListModel=mongoose.model("blockstudent",blockListschema)
 module.exports={BlockListModel}
