@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const blockListschema=mongoose.Schema({
-    name:String,
+   name:String,
     student_id:String,
     image:String,
     email:String,
@@ -8,6 +8,7 @@ const blockListschema=mongoose.Schema({
     course:String,
     coursetime:String,
     userId:String,
+    student_userId:String,
     index:Number,
 })
 const BlockListModel=mongoose.model("blockstudent",blockListschema)
